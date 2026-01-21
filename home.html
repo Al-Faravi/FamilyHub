@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Hub | Welcome Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #10b981;
+            --dark: #0f172a;
+            --light: #f8fafc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--light); color: var(--dark); overflow-x: hidden; }
+
+        /* Navigation */
+        nav {
+            padding: 20px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        .nav-links { list-style: none; display: flex; gap: 30px; }
+        .nav-links a { text-decoration: none; color: var(--dark); font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+        .btn-portal { background: var(--primary); color: white !important; padding: 10px 20px; border-radius: 8px; }
+
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+        }
+        .hero-content { max-width: 600px; }
+        .hero-content h1 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 20px; }
+        .hero-content p { font-size: 1.1rem; color: #64748b; margin-bottom: 30px; }
+        .cta-buttons { display: flex; gap: 15px; }
+        .btn { padding: 15px 30px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: 0.3s; }
+        .btn-main { background: var(--primary); color: white; }
+        .btn-outline { border: 2px solid var(--primary); color: var(--primary); }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2); }
+
+        /* Stats Section */
+        .stats-banner {
+            margin-top: -50px;
+            padding: 0 10%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .stat-item {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+        }
+        .stat-item i { font-size: 2rem; color: var(--secondary); margin-bottom: 10px; }
+        .stat-item h2 { font-size: 2rem; margin-bottom: 5px; }
+
+        /* News Section */
+        .news-section { padding: 80px 10%; }
+        .section-title { text-align: center; margin-bottom: 50px; }
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .news-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; }
+        .news-card:hover { transform: translateY(-10px); }
+        .news-img { height: 200px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: #cbd5e1; }
+        .news-body { padding: 20px; }
+        .news-tag { background: #dcfce7; color: #16a34a; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .news-body h3 { margin: 10px 0; }
+        .news-body p { color: #64748b; font-size: 0.9rem; }
+
+        /* Footer */
+        footer { background: var(--dark); color: white; padding: 50px 10%; text-align: center; }
+        
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            .stats-banner { grid-template-columns: 1fr; margin-top: 20px; }
+            nav { padding: 20px 5%; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo"><i class="fas fa-house-chimney"></i> FamilyHub</div>
+    <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#news">News</a></li>
+        <li><a href="index.html" class="btn-portal">Member Directory</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Connecting Generations, One Click at a Time.</h1>
+        <p>Welcome to our exclusive family portal. Access the blood directory, stay updated with news, and manage our family network seamlessly.</p>
+        <div class="cta-buttons">
+            <a href="index.html" class="btn btn-main">Explore Directory</a>
+            <a href="#news" class="btn btn-outline">Latest Updates</a>
+        </div>
+    </div>
+</section>
+
+
+
+<div class="stats-banner">
+    <div class="stat-item">
+        <i class="fas fa-users"></i>
+        <h2 id="total-members">--</h2>
+        <p>Active Members</p>
+    </div>
+    <div class="stat-item">
+        <i class="fas fa-droplet"></i>
+        <h2 id="blood-donors">--</h2>
+        <p>Blood Donors</p>
+    </div>
+    <div class="stat-item">
+        <i class="fas fa-calendar-check"></i>
+        <h2>Upcoming</h2>
+        <p>Family Reunion</p>
+    </div>
+</div>
+
+<section id="news" class="news-section">
+    <div class="section-title">
+        <h2>News & Updates</h2>
+        <p>Stay informed about our family moments</p>
+    </div>
+
+    <div class="news-grid">
+        <div class="news-card">
+            <div class="news-img"><i class="fas fa-newspaper"></i></div>
+            <div class="news-body">
+                <span class="news-tag">Announcement</span>
+                <h3>Grand Family Picnic 2024</h3>
+                <p>We are planning a grand family picnic this winter. Get ready for a day full of joy, food, and games!</p>
+            </div>
+        </div>
+        <div class="news-card">
+            <div class="news-img"><i class="fas fa-bullhorn"></i></div>
+            <div class="news-body">
+                <span class="news-tag">Urgent</span>
+                <h3>Blood Database Updated</h3>
+                <p>We've updated our blood donor list. Please check the directory to see the latest available donors in our family.</p>
+            </div>
+        </div>
+        <div class="news-card">
+            <div class="news-img"><i class="fas fa-heart"></i></div>
+            <div class="news-body">
+                <span class="news-tag">Milestone</span>
+                <h3>New Addition to the Family</h3>
+                <p>Congratulations to Shakawat for the new member in their family! Let's share the happiness together.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<footer>
+    <p>&copy; 2024 FamilyHub. Built with ❤️ for our Family.</p>
+</footer>
+
+<script>
+    // সার্ভার থেকে লাইভ ডাটা নিয়ে এসে স্ট্যাটাস আপডেট করা
+    async function fetchStats() {
+        try {
+            const res = await fetch('http://localhost:5000/api/students');
+            const data = await res.json();
+            document.getElementById('total-members').innerText = data.length;
+            const donors = data.filter(c => c.blood_group).length;
+            document.getElementById('blood-donors').innerText = donors;
+        } catch (error) {
+            console.log("Stats fetch error:", error);
+            document.getElementById('total-members').innerText = "0";
+            document.getElementById('blood-donors').innerText = "0";
+        }
+    }
+
+    window.onload = fetchStats;
+</script>
+
+</body>
+</html>

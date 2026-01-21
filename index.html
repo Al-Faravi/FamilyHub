@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directory | Family Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg); color: var(--text-main); line-height: 1.6; }
+
+        /* Navigation Bar */
+        nav {
+            background: white;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-brand { font-weight: 700; font-size: 1.2rem; color: var(--primary); text-decoration: none; }
+        .nav-links a { text-decoration: none; color: var(--text-muted); font-weight: 500; font-size: 0.9rem; transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+
+        /* Header Section */
+        .page-header { margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .page-header h1 { font-size: 1.8rem; font-weight: 700; color: var(--text-main); }
+        .page-header p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: var(--card-bg); padding: 20px; border-radius: 12px; text-align: left; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border-left: 4px solid var(--primary); }
+        .stat-card h3 { font-size: 1.5rem; color: var(--text-main); margin-bottom: 5px; }
+        .stat-card p { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+
+        /* Layout */
+        .main-grid { display: grid; grid-template-columns: 350px 1fr; gap: 30px; }
+        @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
+
+        /* Form Card */
+        .card { background: var(--card-bg); padding: 25px; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: 1px solid #edf2f7; position: sticky; top: 100px; }
+        .card h2 { font-size: 1.1rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: var(--text-main); }
+
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 5px; color: var(--text-muted); }
+        input, select { width: 100%; padding: 10px; border: 2px solid #f1f5f9; border-radius: 8px; font-size: 0.9rem; transition: 0.3s; font-family: inherit; }
+        input:focus, select:focus { border-color: var(--primary); outline: none; background: white; }
+
+        /* Buttons */
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-warning { background: var(--warning); color: white; display: none; }
+        .btn-cancel { background: #f1f5f9; color: var(--text-muted); display: none; margin-top: 10px; }
+
+        /* Search & Filter Bar */
+        .search-area { background: var(--card-bg); padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; gap: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; }
+        .search-area input { flex: 2; border: 1px solid #e2e8f0; }
+        .search-area select { flex: 1; border: 1px solid #e2e8f0; }
+
+        /* List Styling */
+        .list-container { display: flex; flex-direction: column; gap: 12px; }
+        .list-item { background: var(--card-bg); padding: 15px 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #f1f5f9; transition: 0.2s; }
+        .list-item:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+
+        .info h4 { font-size: 1rem; color: var(--text-main); }
+        .info p { font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 10px; margin-top: 2px; }
+        .blood-badge { background: #fee2e2; color: #ef4444; padding: 2px 8px; border-radius: 5px; font-weight: 700; font-size: 0.7rem; }
+
+        .item-actions { display: flex; gap: 6px; }
+        .action-btn { width: 34px; height: 34px; border-radius: 6px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+        .edit-btn { background: #eef2ff; color: var(--primary); }
+        .del-btn { background: #fff1f2; color: var(--danger); }
+        .call-btn { background: #ecfdf5; color: var(--success); text-decoration: none; }
+
+        /* Toast */
+        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 1100; }
+        .toast { background: var(--dark); color: white; padding: 10px 20px; border-radius: 8px; margin-top: 10px; font-size: 0.85rem; background: #1e293b; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2); animation: fadeInUp 0.3s ease; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Empty state */
+        .empty-state { text-align: center; padding: 50px; color: var(--text-muted); }
+        .empty-state i { font-size: 2.5rem; opacity: 0.2; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="home.html" class="nav-brand"><i class="fas fa-arrow-left"></i> Family Portal</a>
+    <div class="nav-links">
+        <a href="home.html">Back to Home</a>
+    </div>
+</nav>
+
+<div id="toast-container"></div>
+
+<div class="container">
+    <header class="page-header">
+        <div>
+            <h1>Member Directory</h1>
+            <p>Manage and update family information</p>
+        </div>
+    </header>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <p>Total Cousins</p>
+            <h3 id="total-count">0</h3>
+        </div>
+        <div class="stat-card" style="border-left-color: var(--success);">
+            <p>Blood Donors</p>
+            <h3 id="donor-count">0</h3>
+        </div>
+        <div class="stat-card" style="border-left-color: var(--warning);">
+            <p>Common Blood</p>
+            <h3 id="urgent-group">-</h3>
+        </div>
+    </div>
+
+    <div class="main-grid">
+        <aside>
+            <div class="card">
+                <h2 id="form-title"><i class="fas fa-plus-circle"></i> Add New Member</h2>
+                <input type="hidden" id="student-id">
+                
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="name" placeholder="Name">
+                </div>
+
+                <div class="form-group">
+                    <label>Blood Group</label>
+                    <select id="blood">
+                        <option value="">Select Group</option>
+                        <option value="A+">A+</option><option value="A-">A-</option>
+                        <option value="B+">B+</option><option value="B-">B-</option>
+                        <option value="O+">O+</option><option value="O-">O-</option>
+                        <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="text" id="phone" placeholder="017XXXXXXXX">
+                </div>
+
+                <button id="add-btn" class="btn btn-primary" onclick="addCousin()">
+                    Save Member
+                </button>
+                <button id="update-btn" class="btn btn-warning" onclick="updateCousin()">
+                    Update Details
+                </button>
+                <button id="cancel-btn" class="btn btn-cancel" onclick="resetForm()">
+                    Cancel
+                </button>
+            </div>
+        </aside>
+
+        <main>
+            <div class="search-area">
+                <input type="text" id="searchName" placeholder="Search by name..." oninput="filterData()">
+                <select id="filterBlood" onchange="filterData()">
+                    <option value="">All Blood</option>
+                    <option value="A+">A+</option><option value="B+">B+</option>
+                    <option value="O+">O+</option><option value="AB+">AB+</option>
+                </select>
+            </div>
+
+            <div id="list" class="list-container">
+                <p style="text-align: center; color: var(--text-muted); padding: 20px;">Loading members...</p>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    const API_URL = 'http://localhost:5000/api/students';
+    let allCousins = [];
+
+    async function loadData() {
+        try {
+            const res = await fetch(API_URL);
+            allCousins = await res.json();
+            renderList(allCousins);
+            updateStats();
+        } catch (error) {
+            showToast("Server connection failed!");
+        }
+    }
+
+    function renderList(data) {
+        const listDiv = document.getElementById('list');
+        if (data.length === 0) {
+            listDiv.innerHTML = `<div class="empty-state"><i class="fas fa-users-slash"></i><p>No family members found.</p></div>`;
+            return;
+        }
+
+        listDiv.innerHTML = data.map(s => `
+            <div class="list-item">
+                <div class="info">
+                    <h4>${s.name}</h4>
+                    <p>
+                        <span class="blood-badge">${s.blood_group}</span>
+                        <span><i class="fas fa-phone-alt" style="font-size:10px"></i> ${s.phone || 'N/A'}</span>
+                    </p>
+                </div>
+                <div class="item-actions">
+                    ${s.phone ? `<a href="tel:${s.phone}" class="action-btn call-btn"><i class="fas fa-phone"></i></a>` : ''}
+                    <button class="action-btn edit-btn" onclick="editMode('${s._id}', '${s.name}', '${s.blood_group}', '${s.phone || ''}')">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                    <button class="action-btn del-btn" onclick="deleteCousin('${s._id}')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function updateStats() {
+        document.getElementById('total-count').innerText = allCousins.length;
+        document.getElementById('donor-count').innerText = allCousins.filter(c => c.blood_group).length;
+        
+        if(allCousins.length > 0) {
+            const counts = allCousins.reduce((acc, curr) => {
+                acc[curr.blood_group] = (acc[curr.blood_group] || 0) + 1;
+                return acc;
+            }, {});
+            const topGroup = Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b);
+            document.getElementById('urgent-group').innerText = topGroup;
+        }
+    }
+
+    function filterData() {
+        const searchTerm = document.getElementById('searchName').value.toLowerCase();
+        const bloodFilter = document.getElementById('filterBlood').value;
+        const filtered = allCousins.filter(c => {
+            const matchesName = c.name.toLowerCase().includes(searchTerm);
+            const matchesBlood = !bloodFilter || c.blood_group === bloodFilter;
+            return matchesName && matchesBlood;
+        });
+        renderList(filtered);
+    }
+
+    async function addCousin() {
+        const name = document.getElementById('name').value;
+        const blood_group = document.getElementById('blood').value;
+        const phone = document.getElementById('phone').value;
+
+        if(!name || !blood_group) return showToast("Name and Blood Group required!");
+
+        const res = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, blood_group, phone })
+        });
+
+        if(res.ok) {
+            showToast("Member added successfully!");
+            resetForm();
+            loadData();
+        }
+    }
+
+    function editMode(id, name, blood, phone) {
+        document.getElementById('student-id').value = id;
+        document.getElementById('name').value = name;
+        document.getElementById('blood').value = blood;
+        document.getElementById('phone').value = phone;
+
+        document.getElementById('add-btn').style.display = 'none';
+        document.getElementById('update-btn').style.display = 'flex';
+        document.getElementById('cancel-btn').style.display = 'flex';
+        document.getElementById('form-title').innerHTML = '<i class="fas fa-edit"></i> Edit Member';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function updateCousin() {
+        const id = document.getElementById('student-id').value;
+        const name = document.getElementById('name').value;
+        const blood_group = document.getElementById('blood').value;
+        const phone = document.getElementById('phone').value;
+
+        const res = await fetch(`${API_URL}/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, blood_group, phone })
+        });
+
+        if(res.ok) {
+            showToast("Member details updated!");
+            resetForm();
+            loadData();
+        }
+    }
+
+    async function deleteCousin(id) {
+        if(confirm("Delete this member?")) {
+            const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+            if(res.ok) {
+                showToast("Member deleted!");
+                loadData();
+            }
+        }
+    }
+
+    function resetForm() {
+        document.getElementById('student-id').value = '';
+        document.getElementById('name').value = '';
+        document.getElementById('blood').value = '';
+        document.getElementById('phone').value = '';
+        document.getElementById('add-btn').style.display = 'flex';
+        document.getElementById('update-btn').style.display = 'none';
+        document.getElementById('cancel-btn').style.display = 'none';
+        document.getElementById('form-title').innerHTML = '<i class="fas fa-plus-circle"></i> Add New Member';
+    }
+
+    function showToast(msg) {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerText = msg;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    loadData();
+</script>
+</body>
+</html>
