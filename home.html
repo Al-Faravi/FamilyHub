@@ -37,7 +37,7 @@
             padding: 12px 10%;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); text-decoration: none; }
         .nav-links { list-style: none; display: flex; gap: 30px; align-items: center; }
         .nav-links a { text-decoration: none; color: var(--dark); font-weight: 500; transition: 0.3s; }
         .nav-links a:hover { color: var(--primary); }
@@ -45,7 +45,7 @@
 
         /* Hero Section */
         .hero {
-            height: 90vh;
+            height: 85vh;
             background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
             display: flex;
             align-items: center;
@@ -54,23 +54,25 @@
         .hero-content { max-width: 700px; }
         .greeting { color: var(--primary); font-weight: 600; font-size: 1.2rem; margin-bottom: 10px; display: block; }
         .hero-content h1 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 20px; }
-        .cta-buttons { display: flex; gap: 15px; }
-        .btn { padding: 15px 30px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: 0.3s; cursor: pointer; border: none; }
+        .cta-buttons { display: flex; gap: 15px; flex-wrap: wrap; }
+        .btn { padding: 12px 25px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: 0.3s; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 10px; }
         .btn-main { background: var(--primary); color: white; }
-        .btn-outline { border: 2px solid var(--primary); color: var(--primary); background: transparent; }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2); }
+        .btn-fund { background: var(--secondary); color: white; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
 
         /* Birthday Highlight Bar */
         .birthday-bar {
             background: var(--accent);
             color: white;
-            padding: 10px;
+            padding: 12px;
             text-align: center;
             font-weight: 600;
-            display: none; /* Hidden by default */
+            display: none;
+            position: relative;
+            z-index: 1001;
         }
 
-        /* Stats Section */
+        /* Stats Banner */
         .stats-banner {
             margin-top: -60px;
             padding: 0 10%;
@@ -80,50 +82,37 @@
         }
         .stat-item {
             background: white;
-            padding: 30px;
+            padding: 25px;
             border-radius: 15px;
             text-align: center;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border-bottom: 4px solid transparent;
+        }
+        .stat-item i { font-size: 1.8rem; margin-bottom: 10px; display: block; }
+        .stat-item h2 { font-size: 2rem; margin-bottom: 5px; }
+        .stat-item p { font-size: 0.85rem; color: #64748b; font-weight: 600; }
+
+        /* Notice Section */
+        .section-padding { padding: 80px 10%; }
+        .section-header { text-align: center; margin-bottom: 40px; }
+        .notice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .notice-card { 
+            background: white; padding: 25px; border-radius: 15px; 
+            border-left: 5px solid var(--primary); box-shadow: 0 5px 15px rgba(0,0,0,0.03);
             transition: 0.3s;
         }
-        .stat-item i { font-size: 2rem; color: var(--secondary); margin-bottom: 10px; }
-        .stat-item h2 { font-size: 2.5rem; margin-bottom: 5px; }
+        .notice-card:hover { transform: translateY(-5px); }
+        .notice-card.urgent { border-left-color: var(--danger); background: #fffafb; }
+        .notice-date { font-size: 0.75rem; color: #94a3b8; display: block; margin-bottom: 10px; }
+        .notice-card h3 { margin-bottom: 10px; font-size: 1.1rem; }
+        .notice-card p { font-size: 0.9rem; color: #475569; line-height: 1.5; }
 
-        /* Dynamic Notice Board */
-        .section-padding { padding: 80px 10%; }
-        .section-header { text-align: center; margin-bottom: 50px; }
-        .notice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-        .notice-card { background: white; padding: 25px; border-radius: 15px; border-left: 5px solid var(--primary); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .notice-card.urgent { border-left-color: var(--danger); }
-        .notice-date { font-size: 0.8rem; color: #94a3b8; }
-
-        /* Gallery Section */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-        }
-        .gallery-item {
-            height: 250px;
-            background: #e2e8f0;
-            border-radius: 15px;
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
-        }
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .gallery-item:hover img { transform: scale(1.1); }
-        .gallery-overlay {
-            position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white;
-        }
-
-        /* Footer */
-        footer { background: var(--dark); color: white; padding: 60px 10%; text-align: center; }
+        footer { background: var(--dark); color: white; padding: 40px 10%; text-align: center; font-size: 0.9rem; }
         
         @media (max-width: 768px) {
             .hero-content h1 { font-size: 2.2rem; }
             .nav-links { display: none; }
+            .hero { padding-top: 100px; height: auto; padding-bottom: 100px; }
         }
     </style>
 </head>
@@ -134,11 +123,10 @@
 </div>
 
 <nav id="navbar">
-    <div class="logo"><i class="fas fa-house-chimney"></i> FamilyHub</div>
+    <a href="#" class="logo"><i class="fas fa-house-chimney"></i> FamilyHub</a>
     <ul class="nav-links">
-        <li><a href="#">Home</a></li>
         <li><a href="#notices">Notices</a></li>
-        <li><a href="#gallery">Memories</a></li>
+        <li><a href="fund.html">Family Fund</a></li>
         <li><a href="index.html" class="btn-portal">Directory</a></li>
     </ul>
 </nav>
@@ -146,111 +134,82 @@
 <section class="hero">
     <div class="hero-content">
         <span class="greeting" id="time-greeting">Hello!</span>
-        <h1>Your Family's Digital Home & Network.</h1>
-        <p>Stay connected with cousins, find blood donors instantly, and never miss a family announcement again.</p>
+        <h1>Your Family's Digital Home.</h1>
+        <p style="margin-bottom: 30px; font-size: 1.1rem; color: #475569;">Manage family members, stay updated with announcements, and track the communal fund—all in one place.</p>
         <div class="cta-buttons">
-            <a href="index.html" class="btn btn-main"><i class="fas fa-search"></i> Search Directory</a>
-            <button onclick="window.print()" class="btn btn-outline"><i class="fas fa-print"></i> Print List</button>
+            <a href="index.html" class="btn btn-main"><i class="fas fa-users"></i> Member Directory</a>
+            <a href="fund.html" class="btn btn-fund"><i class="fas fa-wallet"></i> Family Fund</a>
         </div>
     </div>
 </section>
 
 <div class="stats-banner">
-    <div class="stat-item">
-        <i class="fas fa-users"></i>
+    <div class="stat-item" style="border-bottom-color: var(--primary);">
+        <i class="fas fa-user-group" style="color: var(--primary);"></i>
         <h2 id="total-members">0</h2>
-        <p>Total Cousins</p>
+        <p>TOTAL MEMBERS</p>
     </div>
-    <div class="stat-item" style="border-bottom: 4px solid var(--danger);">
+    <div class="stat-item" style="border-bottom-color: var(--danger);">
         <i class="fas fa-droplet" style="color: var(--danger);"></i>
         <h2 id="blood-donors">0</h2>
-        <p>Blood Donors</p>
+        <p>BLOOD DONORS</p>
     </div>
-    <div class="stat-item">
-        <i class="fas fa-calendar-day"></i>
-        <h2 id="upcoming-events">3</h2>
-        <p>Active Notices</p>
+    <div class="stat-item" style="border-bottom-color: var(--secondary);">
+        <i class="fas fa-sack-dollar" style="color: var(--secondary);"></i>
+        <h2 id="fund-balance">৳ 0</h2>
+        <p>CURRENT FUND</p>
     </div>
 </div>
 
 <section id="notices" class="section-padding">
     <div class="section-header">
-        <h2><i class="fas fa-bullhorn"></i> Family Notice Board</h2>
-        <p>Latest updates and announcements from the family elders</p>
+        <h2><i class="fas fa-bullhorn"></i> Notice Board</h2>
+        <p>Important announcements for the family</p>
     </div>
     <div id="notice-container" class="notice-grid">
-        <div class="notice-card">
-            <span class="notice-date">Loading notices...</span>
-        </div>
-    </div>
-</section>
-
-<section id="gallery" class="section-padding" style="background: #f1f5f9;">
-    <div class="section-header">
-        <h2><i class="fas fa-images"></i> Family Memories</h2>
-        <p>Capturing our best moments together</p>
-    </div>
-    <div class="gallery-grid">
-        <div class="gallery-item">
-            <div class="gallery-overlay">Family Picnic 2023</div>
-        </div>
-        <div class="gallery-item">
-            <div class="gallery-overlay">Cousins Meetup</div>
-        </div>
-        <div class="gallery-item">
-            <div class="gallery-overlay">Eid Celebration</div>
-        </div>
+        <p style="text-align: center; grid-column: 1/-1;">Loading notices...</p>
     </div>
 </section>
 
 <footer>
-    <p>&copy; 2024 FamilyHub | Organized with ❤️ by the Cousins</p>
+    <p>&copy; 2024 FamilyHub | Organized with ❤️ for the Family</p>
 </footer>
 
 <script>
-    // ১. কাউন্টার এনিমেশন
-    function animateCounter(id, target) {
-        let current = 0;
-        let increment = Math.ceil(target / 50) || 1;
-        let timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-                current = target;
-                clearInterval(timer);
-            }
-            document.getElementById(id).innerText = current;
-        }, 30);
-    }
+    const API_BASE = 'http://localhost:5000/api';
 
-    // ২. সার্ভার থেকে তথ্য আনা
+    // ১. ড্যাশবোর্ড ডাটা লোড করা
     async function loadDashboardData() {
         try {
-            const res = await fetch('http://localhost:5000/api/students');
-            const members = await res.json();
-
-            // এনিমেশন শুরু
+            // মেম্বার লিস্ট আনা
+            const memRes = await fetch(`${API_BASE}/students`);
+            const members = await memRes.json();
+            
             animateCounter('total-members', members.length);
             const donors = members.filter(m => m.blood_group).length;
             animateCounter('blood-donors', donors);
 
-            // ৩. জন্মদিন চেক করা
+            // ২. জন্মদিন চেক করা
             checkBirthdays(members);
 
-            // ৪. ডাইনামিক নোটিশ তৈরি (Sample Data)
-            renderNotices();
+            // ৩. ফান্ড ডাটা আনা
+            const fundRes = await fetch(`${API_BASE}/fund-summary`);
+            const fund = await fundRes.json();
+            document.getElementById('fund-balance').innerText = `৳ ${fund.balance}`;
+
+            // ৪. নোটিশ লোড করা
+            loadNotices();
 
         } catch (error) {
-            console.error("Fetch Error:", error);
-            document.getElementById('total-members').innerText = "!";
+            console.error("Dashboard Error:", error);
         }
     }
 
     // জন্মদিন চেক করার লজিক
     function checkBirthdays(members) {
         const today = new Date();
-        const todayStr = `${today.getMonth() + 1}-${today.getDate()}`; // format: M-D
+        const todayStr = `${today.getMonth() + 1}-${today.getDate()}`; 
         
-        // ধরুন ডাটাবেজে dob ফিল্ড আছে 'YYYY-MM-DD' ফরম্যাটে
         const bdayBoy = members.find(m => {
             if(!m.dob) return false;
             const d = new Date(m.dob);
@@ -263,25 +222,45 @@
         }
     }
 
-    // নোটিশ রেন্ডার করা
-    function renderNotices() {
-        const container = document.getElementById('notice-container');
-        const notices = [
-            { title: "Grand Picnic 2024", body: "Our annual picnic is scheduled for December 25th.", date: "2 days ago", type: "normal" },
-            { title: "Emergency: O+ Blood Needed", body: "Urgent blood requirement for a relative in Dhaka.", date: "1 hour ago", type: "urgent" },
-            { title: "New Feature Added", body: "You can now print the family directory directly from home.", date: "Just now", type: "normal" }
-        ];
+    // নোটিশ রেন্ডার করা (সার্ভার থেকে)
+    async function loadNotices() {
+        try {
+            const res = await fetch(`${API_BASE}/notices`);
+            const notices = await res.json();
+            const container = document.getElementById('notice-container');
 
-        container.innerHTML = notices.map(n => `
-            <div class="notice-card ${n.type === 'urgent' ? 'urgent' : ''}">
-                <span class="notice-date">${n.date}</span>
-                <h3>${n.title}</h3>
-                <p>${n.body}</p>
-            </div>
-        `).join('');
+            if(notices.length === 0) {
+                container.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">No notices today.</p>';
+                return;
+            }
+
+            container.innerHTML = notices.map(n => `
+                <div class="notice-card ${n.type === 'urgent' ? 'urgent' : ''}">
+                    <span class="notice-date">${new Date(n.date).toLocaleDateString()}</span>
+                    <h3>${n.title}</h3>
+                    <p>${n.content}</p>
+                </div>
+            `).join('');
+        } catch (err) {
+            console.error("Notice Error:", err);
+        }
     }
 
-    // ৫. গ্রিটিং এবং স্ক্রল ইফেক্ট
+    // কাউন্টার এনিমেশন
+    function animateCounter(id, target) {
+        let current = 0;
+        let increment = Math.ceil(target / 30) || 1;
+        let timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            document.getElementById(id).innerText = current;
+        }, 50);
+    }
+
+    // স্ক্রল ইফেক্ট
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('navbar');
         window.scrollY > 50 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled');

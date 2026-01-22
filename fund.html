@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Fund | Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --success: #10b981;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg); color: var(--text-main); }
+
+        nav {
+            background: white; padding: 15px 5%; display: flex;
+            justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .nav-brand { font-weight: 700; color: var(--primary); text-decoration: none; }
+
+        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+
+        /* Summary Cards */
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .s-card { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; }
+        .s-card h3 { font-size: 2rem; margin: 10px 0; }
+        .s-card p { color: #64748b; font-size: 0.9rem; text-transform: uppercase; font-weight: 600; }
+        .balance-card { background: var(--primary); color: white; }
+        .balance-card p { color: #e0e7ff; }
+
+        .main-content { display: grid; grid-template-columns: 350px 1fr; gap: 30px; }
+        @media (max-width: 850px) { .main-content { grid-template-columns: 1fr; } }
+
+        /* Form Style */
+        .card { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 5px; color: #64748b; }
+        input, select { width: 100%; padding: 12px; border: 2px solid #f1f5f9; border-radius: 8px; font-family: inherit; font-size: 0.9rem; }
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; background: var(--primary); color: white; transition: 0.3s; }
+        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* Transaction List */
+        .tx-list { display: flex; flex-direction: column; gap: 10px; }
+        .tx-item { background: white; padding: 15px 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #ccc; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .tx-item.deposit { border-left-color: var(--success); }
+        .tx-item.expense { border-left-color: var(--danger); }
+        .tx-info h4 { font-size: 1rem; color: var(--text-main); }
+        .tx-info span { font-size: 0.75rem; color: #94a3b8; }
+        .tx-amount { font-weight: 700; font-size: 1.1rem; }
+        .amt-deposit { color: var(--success); }
+        .amt-expense { color: var(--danger); }
+
+        #toast { position: fixed; bottom: 20px; right: 20px; background: #1e293b; color: white; padding: 12px 25px; border-radius: 8px; display: none; z-index: 1000; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="home.html" class="nav-brand"><i class="fas fa-wallet"></i> Family Fund</a>
+    <a href="home.html" style="text-decoration: none; color: #64748b;"><i class="fas fa-arrow-left"></i> Dashboard</a>
+</nav>
+
+<div class="container">
+    <div class="summary-grid">
+        <div class="s-card balance-card">
+            <p>Current Balance (অবশিষ্ট)</p>
+            <h3 id="net-balance">৳ 0</h3>
+        </div>
+        <div class="s-card">
+            <p style="color: var(--success);">Total Deposits (জমা)</p>
+            <h3 id="total-deposit">৳ 0</h3>
+        </div>
+        <div class="s-card">
+            <p style="color: var(--danger);">Total Expenses (খরচ)</p>
+            <h3 id="total-expense">৳ 0</h3>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <aside>
+            <div class="card">
+                <h2 style="font-size: 1.2rem; margin-bottom: 20px;"><i class="fas fa-plus-circle"></i> New Transaction</h2>
+                
+                <div class="form-group">
+                    <label>Type</label>
+                    <select id="type">
+                        <option value="Deposit">Income / Deposit (জমা)</option>
+                        <option value="Expense">Expense / Cost (খরচ)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Select Member (তালিকা থেকে নাম বাছুন)</label>
+                    <select id="memberName">
+                        <option value="">-- Select Member --</option>
+                        </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Amount (৳)</label>
+                    <input type="number" id="amount" placeholder="0.00">
+                </div>
+
+                <div class="form-group">
+                    <label>Description (বিবরণ)</label>
+                    <input type="text" id="desc" placeholder="উদাঃ পিকনিকের চাঁদা">
+                </div>
+
+                <button class="btn" onclick="saveTransaction()"><i class="fas fa-check"></i> Submit Entry</button>
+            </div>
+        </aside>
+
+        <main>
+            <h2 style="font-size: 1.2rem; margin-bottom: 15px;">Recent History (লেনদেনের ইতিহাস)</h2>
+            <div id="tx-history" class="tx-list">
+                </div>
+        </main>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+    const API_BASE = 'http://localhost:5000/api';
+
+    // ১. মেম্বারদের লিস্ট লোড করা ড্রপডাউনের জন্য
+    async function loadMembersForDropdown() {
+        try {
+            const res = await fetch(`${API_BASE}/students`);
+            const members = await res.json();
+            const dropdown = document.getElementById('memberName');
+            
+            // ডিফল্ট অপশন রেখে বাকি মেম্বার যোগ করা
+            dropdown.innerHTML = '<option value="">-- Select Member --</option>';
+            members.forEach(member => {
+                const option = document.createElement('option');
+                option.value = member.name;
+                option.textContent = member.name;
+                dropdown.appendChild(option);
+            });
+            
+            // এক্সপেন্স এর জন্য 'অফিস/আদার্স' অপশন যোগ করা (ঐচ্ছিক)
+            const otherOption = document.createElement('option');
+            otherOption.value = "General/Others";
+            otherOption.textContent = "General/Others";
+            dropdown.appendChild(otherOption);
+
+        } catch (err) {
+            console.error("Error loading members:", err);
+        }
+    }
+
+    // ২. ফান্ড সামারি এবং হিস্ট্রি লোড করা
+    async function loadFundData() {
+        try {
+            // অটোমেটিক ক্যালকুলেশন সামারি
+            const summaryRes = await fetch(`${API_BASE}/fund-summary`);
+            const summary = await summaryRes.json();
+            document.getElementById('net-balance').innerText = `৳ ${summary.balance}`;
+            document.getElementById('total-deposit').innerText = `৳ ${summary.deposit}`;
+            document.getElementById('total-expense').innerText = `৳ ${summary.expense}`;
+
+            // হিস্ট্রি লোড
+            const txRes = await fetch(`${API_BASE}/transactions`);
+            const transactions = await txRes.json();
+            renderHistory(transactions);
+        } catch (err) {
+            console.error("Fetch error:", err);
+        }
+    }
+
+    function renderHistory(data) {
+        const container = document.getElementById('tx-history');
+        if(data.length === 0) {
+            container.innerHTML = '<p style="text-align:center; color:#94a3b8; margin-top:20px;">No records yet.</p>';
+            return;
+        }
+
+        container.innerHTML = data.map(tx => `
+            <div class="tx-item ${tx.type.toLowerCase()}">
+                <div class="tx-info">
+                    <h4>${tx.description || 'No Description'}</h4>
+                    <span><i class="fas fa-user"></i> ${tx.memberName || 'N/A'} • ${new Date(tx.date).toLocaleDateString()}</span>
+                </div>
+                <div class="tx-amount ${tx.type === 'Deposit' ? 'amt-deposit' : 'amt-expense'}">
+                    ${tx.type === 'Deposit' ? '+' : '-'} ৳ ${tx.amount}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // ৩. নতুন লেনদেন সেভ করা
+    async function saveTransaction() {
+        const data = {
+            type: document.getElementById('type').value,
+            memberName: document.getElementById('memberName').value,
+            amount: Number(document.getElementById('amount').value),
+            description: document.getElementById('desc').value
+        };
+
+        if(!data.memberName) return alert("দয়া করে একজন মেম্বার বাছুন!");
+        if(!data.amount || data.amount <= 0) return alert("সঠিক টাকার পরিমাণ লিখুন!");
+
+        try {
+            const res = await fetch(`${API_BASE}/transactions`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if(res.ok) {
+                showToast("লেনদেন সফলভাবে সংরক্ষিত হয়েছে!");
+                // ইনপুট ফিল্ড ক্লিয়ার করা
+                document.getElementById('amount').value = '';
+                document.getElementById('desc').value = '';
+                document.getElementById('memberName').value = '';
+                // ডাটা রিফ্রেশ করা (অটোমেটিক ক্যালকুলেশন আপডেট হবে)
+                loadFundData();
+            }
+        } catch (err) {
+            alert("Error saving transaction!");
+        }
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.style.display = 'block';
+        setTimeout(() => t.style.display = 'none', 3000);
+    }
+
+    // পেজ লোড হলে সব ডাটা এবং ড্রপডাউন কল করা
+    window.onload = () => {
+        loadMembersForDropdown();
+        loadFundData();
+    };
+</script>
+
+</body>
+</html>
