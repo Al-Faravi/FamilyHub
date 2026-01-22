@@ -42,7 +42,7 @@
         .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
 
         /* Header Section */
-        .page-header { margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .page-header { margin-bottom: 30px; }
         .page-header h1 { font-size: 1.8rem; font-weight: 700; color: var(--text-main); }
         .page-header p { color: var(--text-muted); font-size: 0.9rem; }
 
@@ -72,19 +72,16 @@
         .btn-warning { background: var(--warning); color: white; display: none; }
         .btn-cancel { background: #f1f5f9; color: var(--text-muted); display: none; margin-top: 10px; }
 
-        /* Search & Filter Bar */
-        .search-area { background: var(--card-bg); padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; gap: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; }
-        .search-area input { flex: 2; border: 1px solid #e2e8f0; }
-        .search-area select { flex: 1; border: 1px solid #e2e8f0; }
-
         /* List Styling */
         .list-container { display: flex; flex-direction: column; gap: 12px; }
         .list-item { background: var(--card-bg); padding: 15px 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #f1f5f9; transition: 0.2s; }
         .list-item:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 
         .info h4 { font-size: 1rem; color: var(--text-main); }
-        .info p { font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 10px; margin-top: 2px; }
+        .info p { font-size: 0.8rem; color: var(--text-muted); display: flex; flex-wrap: wrap; gap: 15px; margin-top: 2px; }
         .blood-badge { background: #fee2e2; color: #ef4444; padding: 2px 8px; border-radius: 5px; font-weight: 700; font-size: 0.7rem; }
+        
+        .sub-info { display: flex; align-items: center; gap: 5px; }
 
         .item-actions { display: flex; gap: 6px; }
         .action-btn { width: 34px; height: 34px; border-radius: 6px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
@@ -92,23 +89,18 @@
         .del-btn { background: #fff1f2; color: var(--danger); }
         .call-btn { background: #ecfdf5; color: var(--success); text-decoration: none; }
 
-        /* Toast */
         #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 1100; }
-        .toast { background: var(--dark); color: white; padding: 10px 20px; border-radius: 8px; margin-top: 10px; font-size: 0.85rem; background: #1e293b; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2); animation: fadeInUp 0.3s ease; }
+        .toast { background: #1e293b; color: white; padding: 10px 20px; border-radius: 8px; margin-top: 10px; font-size: 0.85rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2); animation: fadeInUp 0.3s ease; }
 
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Empty state */
-        .empty-state { text-align: center; padding: 50px; color: var(--text-muted); }
-        .empty-state i { font-size: 2.5rem; opacity: 0.2; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
 <nav>
-    <a href="home.html" class="nav-brand"><i class="fas fa-arrow-left"></i> Family Portal</a>
+    <a href="home.html" class="nav-brand"><i class="fas fa-house-user"></i> FamilyHub</a>
     <div class="nav-links">
-        <a href="home.html">Back to Home</a>
+        <a href="home.html">Back to Dashboard</a>
     </div>
 </nav>
 
@@ -116,10 +108,8 @@
 
 <div class="container">
     <header class="page-header">
-        <div>
-            <h1>Member Directory</h1>
-            <p>Manage and update family information</p>
-        </div>
+        <h1>Member Management</h1>
+        <p>Update information for the family directory</p>
     </header>
 
     <div class="stats-grid">
@@ -131,21 +121,17 @@
             <p>Blood Donors</p>
             <h3 id="donor-count">0</h3>
         </div>
-        <div class="stat-card" style="border-left-color: var(--warning);">
-            <p>Common Blood</p>
-            <h3 id="urgent-group">-</h3>
-        </div>
     </div>
 
     <div class="main-grid">
         <aside>
             <div class="card">
-                <h2 id="form-title"><i class="fas fa-plus-circle"></i> Add New Member</h2>
+                <h2 id="form-title"><i class="fas fa-user-plus"></i> Add Member</h2>
                 <input type="hidden" id="student-id">
                 
                 <div class="form-group">
                     <label>Full Name</label>
-                    <input type="text" id="name" placeholder="Name">
+                    <input type="text" id="name" placeholder="Enter name">
                 </div>
 
                 <div class="form-group">
@@ -164,11 +150,21 @@
                     <input type="text" id="phone" placeholder="017XXXXXXXX">
                 </div>
 
+                <div class="form-group">
+                    <label>Date of Birth</label>
+                    <input type="date" id="dob">
+                </div>
+
+                <div class="form-group">
+                    <label>Address / Location</label>
+                    <input type="text" id="address" placeholder="e.g. Dhaka, Bangladesh">
+                </div>
+
                 <button id="add-btn" class="btn btn-primary" onclick="addCousin()">
-                    Save Member
+                    <i class="fas fa-save"></i> Save Member
                 </button>
                 <button id="update-btn" class="btn btn-warning" onclick="updateCousin()">
-                    Update Details
+                    <i class="fas fa-check"></i> Update Details
                 </button>
                 <button id="cancel-btn" class="btn btn-cancel" onclick="resetForm()">
                     Cancel
@@ -177,17 +173,12 @@
         </aside>
 
         <main>
-            <div class="search-area">
-                <input type="text" id="searchName" placeholder="Search by name..." oninput="filterData()">
-                <select id="filterBlood" onchange="filterData()">
-                    <option value="">All Blood</option>
-                    <option value="A+">A+</option><option value="B+">B+</option>
-                    <option value="O+">O+</option><option value="AB+">AB+</option>
-                </select>
+            <div style="margin-bottom: 20px;">
+                <input type="text" id="searchName" placeholder="🔍 Search by name..." oninput="filterData()" style="padding: 12px; border: 1px solid #e2e8f0;">
             </div>
 
             <div id="list" class="list-container">
-                <p style="text-align: center; color: var(--text-muted); padding: 20px;">Loading members...</p>
+                <p style="text-align: center; color: var(--text-muted);">Loading members...</p>
             </div>
         </main>
     </div>
@@ -211,7 +202,7 @@
     function renderList(data) {
         const listDiv = document.getElementById('list');
         if (data.length === 0) {
-            listDiv.innerHTML = `<div class="empty-state"><i class="fas fa-users-slash"></i><p>No family members found.</p></div>`;
+            listDiv.innerHTML = `<p style="text-align:center; padding:40px; color:#94a3b8;">No members found.</p>`;
             return;
         }
 
@@ -221,12 +212,14 @@
                     <h4>${s.name}</h4>
                     <p>
                         <span class="blood-badge">${s.blood_group}</span>
-                        <span><i class="fas fa-phone-alt" style="font-size:10px"></i> ${s.phone || 'N/A'}</span>
+                        <span class="sub-info"><i class="fas fa-phone-alt"></i> ${s.phone || 'N/A'}</span>
+                        ${s.dob ? `<span class="sub-info"><i class="fas fa-cake-candles"></i> ${s.dob}</span>` : ''}
+                        ${s.address ? `<span class="sub-info"><i class="fas fa-map-marker-alt"></i> ${s.address}</span>` : ''}
                     </p>
                 </div>
                 <div class="item-actions">
                     ${s.phone ? `<a href="tel:${s.phone}" class="action-btn call-btn"><i class="fas fa-phone"></i></a>` : ''}
-                    <button class="action-btn edit-btn" onclick="editMode('${s._id}', '${s.name}', '${s.blood_group}', '${s.phone || ''}')">
+                    <button class="action-btn edit-btn" onclick="editMode('${s._id}', '${s.name}', '${s.blood_group}', '${s.phone || ''}', '${s.dob || ''}', '${s.address || ''}')">
                         <i class="fas fa-pen"></i>
                     </button>
                     <button class="action-btn del-btn" onclick="deleteCousin('${s._id}')">
@@ -240,39 +233,29 @@
     function updateStats() {
         document.getElementById('total-count').innerText = allCousins.length;
         document.getElementById('donor-count').innerText = allCousins.filter(c => c.blood_group).length;
-        
-        if(allCousins.length > 0) {
-            const counts = allCousins.reduce((acc, curr) => {
-                acc[curr.blood_group] = (acc[curr.blood_group] || 0) + 1;
-                return acc;
-            }, {});
-            const topGroup = Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b);
-            document.getElementById('urgent-group').innerText = topGroup;
-        }
     }
 
     function filterData() {
-        const searchTerm = document.getElementById('searchName').value.toLowerCase();
-        const bloodFilter = document.getElementById('filterBlood').value;
-        const filtered = allCousins.filter(c => {
-            const matchesName = c.name.toLowerCase().includes(searchTerm);
-            const matchesBlood = !bloodFilter || c.blood_group === bloodFilter;
-            return matchesName && matchesBlood;
-        });
+        const term = document.getElementById('searchName').value.toLowerCase();
+        const filtered = allCousins.filter(c => c.name.toLowerCase().includes(term));
         renderList(filtered);
     }
 
     async function addCousin() {
-        const name = document.getElementById('name').value;
-        const blood_group = document.getElementById('blood').value;
-        const phone = document.getElementById('phone').value;
+        const data = {
+            name: document.getElementById('name').value,
+            blood_group: document.getElementById('blood').value,
+            phone: document.getElementById('phone').value,
+            dob: document.getElementById('dob').value,
+            address: document.getElementById('address').value
+        };
 
-        if(!name || !blood_group) return showToast("Name and Blood Group required!");
+        if(!data.name || !data.blood_group) return showToast("Name and Blood Group required!");
 
         const res = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, blood_group, phone })
+            body: JSON.stringify(data)
         });
 
         if(res.ok) {
@@ -282,43 +265,49 @@
         }
     }
 
-    function editMode(id, name, blood, phone) {
+    function editMode(id, name, blood, phone, dob, address) {
         document.getElementById('student-id').value = id;
         document.getElementById('name').value = name;
         document.getElementById('blood').value = blood;
         document.getElementById('phone').value = phone;
+        document.getElementById('dob').value = dob;
+        document.getElementById('address').value = address;
 
         document.getElementById('add-btn').style.display = 'none';
         document.getElementById('update-btn').style.display = 'flex';
         document.getElementById('cancel-btn').style.display = 'flex';
-        document.getElementById('form-title').innerHTML = '<i class="fas fa-edit"></i> Edit Member';
+        document.getElementById('form-title').innerHTML = '<i class="fas fa-edit"></i> Edit Details';
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     async function updateCousin() {
         const id = document.getElementById('student-id').value;
-        const name = document.getElementById('name').value;
-        const blood_group = document.getElementById('blood').value;
-        const phone = document.getElementById('phone').value;
+        const data = {
+            name: document.getElementById('name').value,
+            blood_group: document.getElementById('blood').value,
+            phone: document.getElementById('phone').value,
+            dob: document.getElementById('dob').value,
+            address: document.getElementById('address').value
+        };
 
         const res = await fetch(`${API_URL}/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, blood_group, phone })
+            body: JSON.stringify(data)
         });
 
         if(res.ok) {
-            showToast("Member details updated!");
+            showToast("Information updated!");
             resetForm();
             loadData();
         }
     }
 
     async function deleteCousin(id) {
-        if(confirm("Delete this member?")) {
+        if(confirm("Are you sure?")) {
             const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
             if(res.ok) {
-                showToast("Member deleted!");
+                showToast("Member removed.");
                 loadData();
             }
         }
@@ -329,10 +318,12 @@
         document.getElementById('name').value = '';
         document.getElementById('blood').value = '';
         document.getElementById('phone').value = '';
+        document.getElementById('dob').value = '';
+        document.getElementById('address').value = '';
         document.getElementById('add-btn').style.display = 'flex';
         document.getElementById('update-btn').style.display = 'none';
         document.getElementById('cancel-btn').style.display = 'none';
-        document.getElementById('form-title').innerHTML = '<i class="fas fa-plus-circle"></i> Add New Member';
+        document.getElementById('form-title').innerHTML = '<i class="fas fa-user-plus"></i> Add Member';
     }
 
     function showToast(msg) {

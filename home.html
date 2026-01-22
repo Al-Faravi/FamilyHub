@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Family Hub | Welcome Home</title>
+    <title>Family Hub | Digital Home</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #4f46e5;
             --secondary: #10b981;
+            --accent: #f59e0b;
+            --danger: #ef4444;
             --dark: #0f172a;
             --light: #f8fafc;
         }
@@ -52,19 +54,28 @@
         .hero-content { max-width: 700px; }
         .greeting { color: var(--primary); font-weight: 600; font-size: 1.2rem; margin-bottom: 10px; display: block; }
         .hero-content h1 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 20px; }
-        .hero-content p { font-size: 1.1rem; color: #64748b; margin-bottom: 30px; }
         .cta-buttons { display: flex; gap: 15px; }
-        .btn { padding: 15px 30px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: 0.3s; }
+        .btn { padding: 15px 30px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: 0.3s; cursor: pointer; border: none; }
         .btn-main { background: var(--primary); color: white; }
-        .btn-outline { border: 2px solid var(--primary); color: var(--primary); }
+        .btn-outline { border: 2px solid var(--primary); color: var(--primary); background: transparent; }
         .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2); }
+
+        /* Birthday Highlight Bar */
+        .birthday-bar {
+            background: var(--accent);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: 600;
+            display: none; /* Hidden by default */
+        }
 
         /* Stats Section */
         .stats-banner {
             margin-top: -60px;
             padding: 0 10%;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
         }
         .stat-item {
@@ -75,136 +86,132 @@
             box-shadow: 0 15px 30px rgba(0,0,0,0.05);
             transition: 0.3s;
         }
-        .stat-item:hover { transform: translateY(-5px); }
         .stat-item i { font-size: 2rem; color: var(--secondary); margin-bottom: 10px; }
-        .stat-item h2 { font-size: 2.5rem; margin-bottom: 5px; color: var(--dark); }
+        .stat-item h2 { font-size: 2.5rem; margin-bottom: 5px; }
 
-        /* News Section */
-        .news-section { padding: 100px 10%; }
-        .section-title { text-align: center; margin-bottom: 50px; }
-        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .news-card { 
-            background: white; border-radius: 15px; overflow: hidden; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.5s;
-            opacity: 0; transform: translateY(30px); /* For Scroll Animation */
+        /* Dynamic Notice Board */
+        .section-padding { padding: 80px 10%; }
+        .section-header { text-align: center; margin-bottom: 50px; }
+        .notice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .notice-card { background: white; padding: 25px; border-radius: 15px; border-left: 5px solid var(--primary); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .notice-card.urgent { border-left-color: var(--danger); }
+        .notice-date { font-size: 0.8rem; color: #94a3b8; }
+
+        /* Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
         }
-        .news-card.show { opacity: 1; transform: translateY(0); }
-        .news-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-        .news-img { height: 180px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: #cbd5e1; transition: 0.3s; }
-        .news-card:hover .news-img { background: var(--primary); color: white; }
-        .news-body { padding: 25px; }
-        .news-tag { background: #dcfce7; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
-        .news-body h3 { margin: 15px 0 10px; font-size: 1.25rem; }
-        .news-body p { color: #64748b; font-size: 0.95rem; line-height: 1.6; }
+        .gallery-item {
+            height: 250px;
+            background: #e2e8f0;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .gallery-item:hover img { transform: scale(1.1); }
+        .gallery-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white;
+        }
 
         /* Footer */
         footer { background: var(--dark); color: white; padding: 60px 10%; text-align: center; }
-        .footer-links { margin: 20px 0; display: flex; justify-content: center; gap: 20px; }
-        .footer-links a { color: #94a3b8; text-decoration: none; font-size: 1.5rem; transition: 0.3s; }
-        .footer-links a:hover { color: white; }
         
         @media (max-width: 768px) {
-            .hero-content h1 { font-size: 2.5rem; }
-            .stats-banner { grid-template-columns: 1fr; margin-top: 20px; }
-            nav { padding: 15px 5%; background: white; }
-            .nav-links { display: none; } /* simplifying for mobile */
+            .hero-content h1 { font-size: 2.2rem; }
+            .nav-links { display: none; }
         }
     </style>
 </head>
 <body>
 
+<div id="bday-announcer" class="birthday-bar">
+    <i class="fas fa-cake-candles"></i> Today is <span id="bday-name">...</span>'s Birthday! 🎂
+</div>
+
 <nav id="navbar">
     <div class="logo"><i class="fas fa-house-chimney"></i> FamilyHub</div>
     <ul class="nav-links">
         <li><a href="#">Home</a></li>
-        <li><a href="#news">News</a></li>
-        <li><a href="index.html" class="btn-portal">Member Directory</a></li>
+        <li><a href="#notices">Notices</a></li>
+        <li><a href="#gallery">Memories</a></li>
+        <li><a href="index.html" class="btn-portal">Directory</a></li>
     </ul>
 </nav>
 
 <section class="hero">
     <div class="hero-content">
-        <span class="greeting" id="time-greeting">Welcome back!</span>
-        <h1 id="hero-title">Connecting Generations, One Click at a Time.</h1>
-        <p>Your exclusive family portal to manage blood donors, share news, and stay connected with every cousin in the network.</p>
+        <span class="greeting" id="time-greeting">Hello!</span>
+        <h1>Your Family's Digital Home & Network.</h1>
+        <p>Stay connected with cousins, find blood donors instantly, and never miss a family announcement again.</p>
         <div class="cta-buttons">
-            <a href="index.html" class="btn btn-main">Manage Directory</a>
-            <a href="#news" class="btn btn-outline">Read Updates</a>
+            <a href="index.html" class="btn btn-main"><i class="fas fa-search"></i> Search Directory</a>
+            <button onclick="window.print()" class="btn btn-outline"><i class="fas fa-print"></i> Print List</button>
         </div>
     </div>
 </section>
-
-
 
 <div class="stats-banner">
     <div class="stat-item">
         <i class="fas fa-users"></i>
         <h2 id="total-members">0</h2>
-        <p>Active Members</p>
+        <p>Total Cousins</p>
     </div>
-    <div class="stat-item">
-        <i class="fas fa-droplet"></i>
+    <div class="stat-item" style="border-bottom: 4px solid var(--danger);">
+        <i class="fas fa-droplet" style="color: var(--danger);"></i>
         <h2 id="blood-donors">0</h2>
         <p>Blood Donors</p>
     </div>
     <div class="stat-item">
-        <i class="fas fa-calendar-check"></i>
-        <h2>Upcoming</h2>
-        <p>Family Reunion</p>
+        <i class="fas fa-calendar-day"></i>
+        <h2 id="upcoming-events">3</h2>
+        <p>Active Notices</p>
     </div>
 </div>
 
-<section id="news" class="news-section">
-    <div class="section-title">
-        <h2>Latest News & Updates</h2>
-        <p>What's happening in our family circle</p>
+<section id="notices" class="section-padding">
+    <div class="section-header">
+        <h2><i class="fas fa-bullhorn"></i> Family Notice Board</h2>
+        <p>Latest updates and announcements from the family elders</p>
     </div>
+    <div id="notice-container" class="notice-grid">
+        <div class="notice-card">
+            <span class="notice-date">Loading notices...</span>
+        </div>
+    </div>
+</section>
 
-    <div class="news-grid">
-        <div class="news-card">
-            <div class="news-img"><i class="fas fa-newspaper"></i></div>
-            <div class="news-body">
-                <span class="news-tag">Event</span>
-                <h3>Grand Family Picnic 2024</h3>
-                <p>Preparations are underway for our annual picnic. Don't forget to register your family by next Friday!</p>
-            </div>
+<section id="gallery" class="section-padding" style="background: #f1f5f9;">
+    <div class="section-header">
+        <h2><i class="fas fa-images"></i> Family Memories</h2>
+        <p>Capturing our best moments together</p>
+    </div>
+    <div class="gallery-grid">
+        <div class="gallery-item">
+            <div class="gallery-overlay">Family Picnic 2023</div>
         </div>
-        <div class="news-card">
-            <div class="news-img"><i class="fas fa-bullhorn"></i></div>
-            <div class="news-body">
-                <span class="news-tag">Alert</span>
-                <h3>Blood Bank Synchronized</h3>
-                <p>We have successfully synced our member list with the new database. Please verify your phone numbers.</p>
-            </div>
+        <div class="gallery-item">
+            <div class="gallery-overlay">Cousins Meetup</div>
         </div>
-        <div class="news-card">
-            <div class="news-img"><i class="fas fa-heart"></i></div>
-            <div class="news-body">
-                <span class="news-tag">Joy</span>
-                <h3>New Graduate in Family</h3>
-                <p>Congratulations to Al-Faravi for completing his B.Sc in Engineering! We are all proud of you.</p>
-            </div>
+        <div class="gallery-item">
+            <div class="gallery-overlay">Eid Celebration</div>
         </div>
     </div>
 </section>
 
 <footer>
-    <div class="footer-links">
-        <a href="#"><i class="fab fa-facebook"></i></a>
-        <a href="#"><i class="fab fa-whatsapp"></i></a>
-        <a href="#"><i class="fas fa-envelope"></i></a>
-    </div>
-    <p>&copy; 2024 FamilyHub. Built with ❤️ for the family.</p>
+    <p>&copy; 2024 FamilyHub | Organized with ❤️ by the Cousins</p>
 </footer>
 
 <script>
-    // ১. কাউন্টার এনিমেশন ফাংশন
+    // ১. কাউন্টার এনিমেশন
     function animateCounter(id, target) {
         let current = 0;
-        let increment = target > 100 ? 5 : 1;
-        let duration = 2000; // ২ সেকেন্ড
-        let stepTime = Math.abs(Math.floor(duration / target));
-        
+        let increment = Math.ceil(target / 50) || 1;
         let timer = setInterval(() => {
             current += increment;
             if (current >= target) {
@@ -212,55 +219,85 @@
                 clearInterval(timer);
             }
             document.getElementById(id).innerText = current;
-        }, stepTime);
+        }, 30);
     }
 
-    // ২. ডাইনামিক গ্রিটিং (সকাল/বিকাল/রাত)
-    function setGreeting() {
-        const hour = new Date().getHours();
-        const greetingEl = document.getElementById('time-greeting');
-        if (hour < 12) greetingEl.innerText = "☀️ Good Morning, Family!";
-        else if (hour < 18) greetingEl.innerText = "🌤️ Good Afternoon!";
-        else greetingEl.innerText = "🌙 Good Evening!";
-    }
-
-    // ৩. সার্ভার থেকে ডেটা আনা এবং কাউন্টার কল করা
-    async function fetchStats() {
+    // ২. সার্ভার থেকে তথ্য আনা
+    async function loadDashboardData() {
         try {
             const res = await fetch('http://localhost:5000/api/students');
-            const data = await res.json();
-            
+            const members = await res.json();
+
             // এনিমেশন শুরু
-            animateCounter('total-members', data.length);
-            const donors = data.filter(c => c.blood_group).length;
+            animateCounter('total-members', members.length);
+            const donors = members.filter(m => m.blood_group).length;
             animateCounter('blood-donors', donors);
-            
+
+            // ৩. জন্মদিন চেক করা
+            checkBirthdays(members);
+
+            // ৪. ডাইনামিক নোটিশ তৈরি (Sample Data)
+            renderNotices();
+
         } catch (error) {
-            console.log("Stats fetch error:", error);
+            console.error("Fetch Error:", error);
             document.getElementById('total-members').innerText = "!";
         }
     }
 
-    // ৪. স্ক্রল ইফেক্ট (Navbar)
+    // জন্মদিন চেক করার লজিক
+    function checkBirthdays(members) {
+        const today = new Date();
+        const todayStr = `${today.getMonth() + 1}-${today.getDate()}`; // format: M-D
+        
+        // ধরুন ডাটাবেজে dob ফিল্ড আছে 'YYYY-MM-DD' ফরম্যাটে
+        const bdayBoy = members.find(m => {
+            if(!m.dob) return false;
+            const d = new Date(m.dob);
+            return `${d.getMonth() + 1}-${d.getDate()}` === todayStr;
+        });
+
+        if (bdayBoy) {
+            document.getElementById('bday-announcer').style.display = 'block';
+            document.getElementById('bday-name').innerText = bdayBoy.name;
+        }
+    }
+
+    // নোটিশ রেন্ডার করা
+    function renderNotices() {
+        const container = document.getElementById('notice-container');
+        const notices = [
+            { title: "Grand Picnic 2024", body: "Our annual picnic is scheduled for December 25th.", date: "2 days ago", type: "normal" },
+            { title: "Emergency: O+ Blood Needed", body: "Urgent blood requirement for a relative in Dhaka.", date: "1 hour ago", type: "urgent" },
+            { title: "New Feature Added", body: "You can now print the family directory directly from home.", date: "Just now", type: "normal" }
+        ];
+
+        container.innerHTML = notices.map(n => `
+            <div class="notice-card ${n.type === 'urgent' ? 'urgent' : ''}">
+                <span class="notice-date">${n.date}</span>
+                <h3>${n.title}</h3>
+                <p>${n.body}</p>
+            </div>
+        `).join('');
+    }
+
+    // ৫. গ্রিটিং এবং স্ক্রল ইফেক্ট
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('navbar');
-        if (window.scrollY > 50) nav.classList.add('scrolled');
-        else nav.classList.remove('scrolled');
-
-        // ৫. নিউজ কার্ড রিভিল এনিমেশন
-        const cards = document.querySelectorAll('.news-card');
-        cards.forEach(card => {
-            const cardTop = card.getBoundingClientRect().top;
-            if (cardTop < window.innerHeight - 100) {
-                card.classList.add('show');
-            }
-        });
+        window.scrollY > 50 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled');
     });
 
-    // পেজ লোড হলে রান করবে
+    function setGreeting() {
+        const hour = new Date().getHours();
+        const el = document.getElementById('time-greeting');
+        if (hour < 12) el.innerText = "☀️ Good Morning, Family!";
+        else if (hour < 18) el.innerText = "🌤️ Good Afternoon!";
+        else el.innerText = "🌙 Good Evening!";
+    }
+
     window.onload = () => {
         setGreeting();
-        fetchStats();
+        loadDashboardData();
     };
 </script>
 
